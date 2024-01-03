@@ -1,0 +1,56 @@
+name: rjd-gemma # you probably want to 'snapcraft register <name>'
+title: GEMMA # you probably want to 'snapcraft register <name>'
+version: '0.98.5' # just for humans, typically '1.2+git' or '1.3.2'
+summary:  Toolkit for models to GWAS data.  # 79 char long summary
+description: |
+        "GEMMA is a software toolkit for fast application of linear mixed models (LMMs) and related models to genome-wide association studies (GWAS) and other large-scale data sets."
+        * The description above refers to the software: https://github.com/genetics-statistics/GEMMA
+        * I have packaged the software as a snap for **personal use** but I have made the snap available for free.
+        * I do not maintain the software itself. I only maintain the snap packaging. Please report software bugs to the maintainers.
+        * Report snap-specific bugs to me.
+        * I _DO_ use this snap. It _HAS BEEN tested_ on my system. I __do not__ track the latest version.
+        * __This snap works.__
+        * Packaging 'style' : Binary for linux machines.
+        * License refers to the original software, not the snapcraft 'code'.
+        * More info:
+        * Run the following to rename the snap ```sudo snap alias rjd-gemma.gemma gemma```
+        
+website: https://github.com/RJDan/gemma_snap
+source-code : https://github.com/RJDan/gemma_snap
+#icon: Rlogo.png
+
+base: core22
+grade: stable # stable, devel
+confinement: strict # strict, devmode, classic
+license:  GPL-3.0-only
+architectures:
+      - amd64
+
+apps:
+    gemma:
+        command: bin/gemma
+        plugs:
+          - home
+          - removable-media
+
+parts:
+    gemma:
+        plugin: nil
+        build-packages:
+                - wget
+                - tree
+        override-pull: |
+                    wget https://github.com/genetics-statistics/GEMMA/releases/download/v0.98.5/gemma-0.98.5-linux-static-AMD64.gz
+                    gunzip gemma-0.98.5-linux-static-AMD64.gz
+                    snapcraftctl pull
+        override-build: |
+                    mv gemma-0.98.5-linux-static-AMD64 $SNAPCRAFT_PART_INSTALL
+                    chmod +x $SNAPCRAFT_PART_INSTALL/gemma-0.98.5-linux-static-AMD64
+                    snapcraftctl build
+        organize:
+                gemma-0.98.5-linux-static-AMD64: bin/gemma
+        stage:
+                - bin
+        prime:
+                - bin
+
