@@ -15,6 +15,8 @@ description: |
         * More info:
         * Run the following to rename the snap:
             ```sudo snap alias rjd-gemma.gemma gemma```
+        *  If you store documents on an external USB drive or similar, ensure you manually connect the removable-media interface after installing the snap:
+        ```sudo snap connect rjd-gemma:removable-media```
         * License info available here: https://github.com/genetics-statistics/GEMMA#license
         
 website: https://github.com/RJDan/gemma_snap
@@ -45,11 +47,11 @@ parts:
         override-pull: |
                     wget https://github.com/genetics-statistics/GEMMA/releases/download/v0.98.5/gemma-0.98.5-linux-static-AMD64.gz
                     gunzip gemma-0.98.5-linux-static-AMD64.gz
-                    snapcraftctl pull
+                    craftctl
         override-build: |
                     mv gemma-0.98.5-linux-static-AMD64 $SNAPCRAFT_PART_INSTALL
                     chmod +x $SNAPCRAFT_PART_INSTALL/gemma-0.98.5-linux-static-AMD64
-                    snapcraftctl build
+                    craftctl
         organize:
                 gemma-0.98.5-linux-static-AMD64: bin/gemma
                 Icon_230417.svg : snap/Icon.svg
